@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floris Nails & Spa</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8A4FFF',
+                        secondary: '#E8D5FF',
+                        accent: '#5D3FD3',
+                        light: '#F9F5FF',
+                        dark: '#2D2B3A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Playfair Display', 'serif']
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(138, 79, 255, 0.1)',
+                        'hover': '0 10px 30px rgba(138, 79, 255, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .glass {
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+        
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=luxury%20nail%20salon%20interior%20with%20decorative%20lights%2C%20modern%20design%2C%20comfortable%20chairs%2C%20professional%20equipment&image_size=landscape_16_9');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .btn-primary {
+            background-color: #8A4FFF;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #5D3FD3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(138, 79, 255, 0.3);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #8A4FFF;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .active::after {
+            width: 100%;
+        }
+        
+        /* Mobile menu animation */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.hidden {
+            transform: translateX(-100%);
+        }
+        
+        /* Gallery images hover effect */
+        .gallery-img {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .gallery-img img {
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-img:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Testimonial card */
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #8A4FFF;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(138, 79, 255, 0.3);
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+        }
+        
+        .scroll-top:hover {
+            background-color: #5D3FD3;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-primary">Floris Nails & Spa</h1>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <div class="language-switcher mr-4">
+                        <button id="lang-en" class="language-btn active px-3 py-1 rounded-l-md bg-primary text-white">EN</button>
+                        <button id="lang-zh" class="language-btn px-3 py-1 rounded-r-md bg-gray-200 text-dark">中文</button>
+                    </div>
+                    <a href="#home" class="nav-link active text-dark hover:text-primary font-medium">
+                        <span class="en">Home</span>
+                        <span class="zh hidden">首页</span>
+                    </a>
+                    <a href="#about" class="nav-link text-dark hover:text-primary font-medium">
+                        <span class="en">About</span>
+                        <span class="zh hidden">关于我们</span>
+                    </a>
+                    <a href="#services" class="nav-link text-dark hover:text-primary font-medium">
+                        <span class="en">Services</span>
+                        <span class="zh hidden">服务</span>
+                    </a>
+                    <a href="#gallery" class="nav-link text-dark hover:text-primary font-medium">
+                        <span class="en">Gallery</span>
+                        <span class="zh hidden">作品展示</span>
+                    </a>
+                    <a href="#testimonials" class="nav-link text-dark hover:text-primary font-medium">
+                        <span class="en">Testimonials</span>
+                        <span class="zh hidden">客户评价</span>
+                    </a>
+                    <a href="#contact" class="nav-link text-dark hover:text-primary font-medium">
+                        <span class="en">Contact</span>
+                        <span class="zh hidden">联系我们</span>
+                    </a>
+                    <a href="https://go.bychronos.com/l/hartsdale-10530-floris-nails--spa-805701/a/services" target="_blank" class="btn-primary px-6 py-2 rounded-full font-medium">
+                        <span class="en">Book Now</span>
+                        <span class="zh hidden">立即预约</span>
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-dark focus:outline-none">
+                        <i class="fa fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="mobile-menu hidden md:hidden bg-white w-full absolute top-full left-0 shadow-md">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex flex-col space-y-4">
+                    <div class="language-switcher flex justify-center mb-2">
+                        <button id="mobile-lang-en" class="language-btn active px-3 py-1 rounded-l-md bg-primary text-white">EN</button>
+                        <button id="mobile-lang-zh" class="language-btn px-3 py-1 rounded-r-md bg-gray-200 text-dark">中文</button>
+                    </div>
+                    <a href="#home" class="mobile-nav-link py-2 text-dark hover:text-primary font-medium border-b border-gray-100">
+                        <span class="en">Home</span>
+                        <span class="zh hidden">首页</span>
+                    </a>
+                    <a href="#about" class="mobile-nav-link py-2 text-dark hover:text-primary font-medium border-b border-gray-100">
+                        <span class="en">About</span>
+                        <span class="zh hidden">关于我们</span>
+                    </a>
+                    <a href="#services" class="mobile-nav-link py-2 text-dark hover:text-primary font-medium border-b border-gray-100">
+                        <span class="en">Services</span>
+                        <span class="zh hidden">服务</span>
+                    </a>
+                    <a href="#gallery" class="mobile-nav-link py-2 text-dark hover:text-primary font-medium border-b border-gray-100">
+                        <span class="en">Gallery</span>
+                        <span class="zh hidden">作品展示</span>
+                    </a>
+                    <a href="#testimonials" class="mobile-nav-link py-2 text-dark hover:text-primary font-medium border-b border-gray-100">
+                        <span class="en">Testimonials</span>
+                        <span class="zh hidden">客户评价</span>
+                    </a>
+                    <a href="#contact" class="mobile-nav-link py-2 text-dark hover:text-primary font-medium border-b border-gray-100">
+                        <span class="en">Contact</span>
+                        <span class="zh hidden">联系我们</span>
+                    </a>
+                    <a href="https://go.bychronos.com/l/hartsdale-10530-floris-nails--spa-805701/a/services" target="_blank" class="btn-primary px-6 py-2 rounded-full font-medium text-center my-2">
+                        <span class="en">Book Now</span>
+                        <span class="zh hidden">立即预约</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section min-h-screen flex items-center pt-16">
+        <div class="container mx-auto px-4 py-16">
+            <div class="max-w-3xl" data-aos="fade-right" data-aos-duration="1000">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 text-shadow">
+                    <span class="en">Experience Luxury <br>Nail &amp; Spa Services</span>
+                    <span class="zh hidden">体验奢华 <br>美甲和水疗服务</span>
+                </h1>
+                <p class="text-xl text-white mb-8 max-w-2xl">
+                    <span class="en">Indulge in our premium nail care and spa treatments designed to rejuvenate your body and soul.</span>
+                    <span class="zh hidden">享受我们的高端美甲和水疗服务，让您的身心得到焕发。</span>
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="https://go.bychronos.com/l/hartsdale-10530-floris-nails--spa-805701/a/services" target="_blank" class="btn-primary px-8 py-3 rounded-full font-medium text-center text-lg">
+                        <span class="en">Book Now</span>
+                        <span class="zh hidden">立即预约</span>
+                    </a>
+                    <a href="#services" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-medium text-center text-lg hover:bg-white hover:text-primary transition-all-300">
+                        <span class="en">Our Services</span>
+                        <span class="zh hidden">我们的服务</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right" data-aos-duration="800">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20nail%20salon%20interior%20with%20wooden%20countertops%2C%20comfortable%20chairs%2C%20professional%20equipment%2C%20clean%20design&image_size=landscape_4_3" alt="Floris Nails & Spa" class="rounded-lg shadow-xl w-full h-auto">
+                </div>
+                <div class="md:w-1/2 md:pl-16" data-aos="fade-left" data-aos-duration="800">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-dark">
+                        <span class="en">About <span class="text-primary">Floris Nails & Spa</span></span>
+                        <span class="zh hidden">关于 <span class="text-primary">Floris Nails & Spa</span></span>
+                    </h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        <span class="en">Welcome to Floris Nails & Spa, your premier destination for luxury nail care and spa treatments in Hartsdale, NY. Our team of experienced professionals is dedicated to providing you with exceptional services in a clean, comfortable, and relaxing environment.</span>
+                        <span class="zh hidden">欢迎来到 Floris Nails & Spa，您在纽约哈茨代尔的高端美甲和水疗服务首选目的地。我们经验丰富的专业团队致力于在干净、舒适、放松的环境中为您提供卓越的服务。</span>
+                    </p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        <span class="en">We use only the highest quality products to ensure your nails look beautiful and stay healthy. Whether you're looking for a simple manicure or a complete spa experience, we have something for everyone.</span>
+                        <span class="zh hidden">我们只使用最高质量的产品，确保您的指甲看起来美丽且保持健康。无论您是想要简单的美甲还是完整的水疗体验，我们都能满足您的需求。</span>
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="flex items-start">
+                            <div class="bg-secondary p-3 rounded-full mr-4">
+                                <i class="fa fa-check text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark mb-1">Quality Products</h4>
+                                <p class="text-gray-600 text-sm">We use premium brands for all our services</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-secondary p-3 rounded-full mr-4">
+                                <i class="fa fa-check text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark mb-1">Expert Technicians</h4>
+                                <p class="text-gray-600 text-sm">Highly trained and experienced staff</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-secondary p-3 rounded-full mr-4">
+                                <i class="fa fa-check text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark mb-1">Clean Environment</h4>
+                                <p class="text-gray-600 text-sm">Sanitary and hygienic practices</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-secondary p-3 rounded-full mr-4">
+                                <i class="fa fa-check text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark mb-1">Relaxing Atmosphere</h4>
+                                <p class="text-gray-600 text-sm">Tranquil setting for your comfort</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-dark">
+                    <span class="en">Our <span class="text-primary">Services</span></span>
+                    <span class="zh hidden">我们的 <span class="text-primary">服务</span></span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    <span class="en">Discover our wide range of nail care and spa treatments designed to pamper and rejuvenate you.</span>
+                    <span class="zh hidden">探索我们广泛的美甲和水疗护理服务，专为呵护和焕发您的身心而设计。</span>
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card bg-white rounded-lg shadow-soft p-6 transition-all-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-paint-brush text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-dark">
+                        <span class="en">Manicure</span>
+                        <span class="zh hidden">美甲</span>
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        <span class="en">Our signature manicure includes nail shaping, cuticle care, exfoliation, massage, and polish application.</span>
+                        <span class="zh hidden">我们的招牌美甲服务包括指甲塑形、死皮护理、去角质、按摩和指甲油涂抹。</span>
+                    </p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Basic Manicure</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Gel Manicure</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Acrylic Nails</span>
+                        </li>
+                    </ul>
+                    <img src="https://p11-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/2162909787577647110~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1789312004&x-signature=jcOJwsxAQR4MPe9dyTjI%2BZDlGZs%3D" alt="Manicure" class="w-full h-48 object-cover rounded-lg">
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="service-card bg-white rounded-lg shadow-soft p-6 transition-all-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-tint text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-dark">
+                        <span class="en">Pedicure</span>
+                        <span class="zh hidden">足疗</span>
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        <span class="en">Treat your feet to our luxurious pedicure with soaking, exfoliation, callus removal, massage, and polish.</span>
+                        <span class="zh hidden">为您的双脚提供我们豪华的足疗服务，包括浸泡、去角质、去除老茧、按摩和指甲油涂抹。</span>
+                    </p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Basic Pedicure</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Spa Pedicure</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Paraffin Treatment</span>
+                        </li>
+                    </ul>
+                    <img src="https://p11-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/2055000727195746304~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1789312004&x-signature=0TtnggKLB%2BWOmzevp2iR7Cxq5m8%3D" alt="Pedicure" class="w-full h-48 object-cover rounded-lg">
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="service-card bg-white rounded-lg shadow-soft p-6 transition-all-300" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-leaf text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-dark">
+                        <span class="en">Spa Treatments</span>
+                        <span class="zh hidden">水疗护理</span>
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        <span class="en">Indulge in our relaxing spa treatments designed to rejuvenate your body and mind.</span>
+                        <span class="zh hidden">享受我们放松的水疗护理服务，专为焕发您的身心而设计。</span>
+                    </p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Massage Therapy</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Facials</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check text-primary mr-2"></i>
+                            <span class="text-gray-600">Body Treatments</span>
+                        </li>
+                    </ul>
+                    <img src="https://p3-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/2180476049301176324~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1789312004&x-signature=N%2FVWOlWbvc8VhJJ%2B%2FKymLPPmcK0%3D" alt="Spa Treatments" class="w-full h-48 object-cover rounded-lg">
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="https://go.bychronos.com/l/hartsdale-10530-floris-nails--spa-805701/a/services" target="_blank" class="btn-primary px-8 py-3 rounded-full font-medium text-lg inline-block">
+                    <span class="en">View All Services</span>
+                    <span class="zh hidden">查看所有服务</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-dark">
+                    <span class="en">Our <span class="text-primary">Gallery</span></span>
+                    <span class="zh hidden">我们的 <span class="text-primary">作品展示</span></span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    <span class="en">Take a look at some of our beautiful work and the relaxing environment we provide.</span>
+                    <span class="zh hidden">查看我们的一些精美作品和我们提供的放松环境。</span>
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-img rounded-lg overflow-hidden shadow-soft" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://p3-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/1860669966862778393~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1789312004&x-signature=dFNo%2BsjTbakdhYydTNqBZCefRqM%3D" alt="Nail Salon" class="w-full h-64 object-cover">
+                </div>
+                
+                <!-- Gallery Item 2 -->
+                <div class="gallery-img rounded-lg overflow-hidden shadow-soft" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://p3-doubao-search-sign.byteimg.com/labis/image/60da2137d9d00420e154f478ef6f57fc~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1789312004&x-signature=MlUkzONSW8892GbmJB%2BRD%2BWiIa4%3D" alt="Nail Art" class="w-full h-64 object-cover">
+                </div>
+                
+                <!-- Gallery Item 3 -->
+                <div class="gallery-img rounded-lg overflow-hidden shadow-soft" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://p26-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/1789676682949427202~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1789312004&x-signature=fgTPpEJaQ2TiR6GBJCe8VNAXNcA%3D" alt="Nail Service" class="w-full h-64 object-cover">
+                </div>
+                
+                <!-- Gallery Item 4 -->
+                <div class="gallery-img rounded-lg overflow-hidden shadow-soft" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://p26-doubao-search-sign.byteimg.com/labis/image/ff8f192a08a9f3b08f4b0c6967097f86~tplv-be4g95zd3a-image.jpeg?lk3s=feb11e32&x-expires=1789312004&x-signature=OD3esDNG2EIK%2BlJaLWxOdfvNAPg%3D" alt="Nail Designs" class="w-full h-64 object-cover">
+                </div>
+                
+                <!-- Gallery Item 5 -->
+                <div class="gallery-img rounded-lg overflow-hidden shadow-soft" data-aos="fade-up" data-aos-delay="500">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=eyelash%20extensions%20treatment%2C%20professional%20beauty%20salon%2C%20close-up%20of%20eyelashes%2C%20beautiful%20eyes&image_size=square" alt="Eyelash Extensions" class="w-full h-64 object-cover">
+                </div>
+                
+                <!-- Gallery Item 6 -->
+                <div class="gallery-img rounded-lg overflow-hidden shadow-soft" data-aos="fade-up" data-aos-delay="600">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=eyelash%20extensions%20procedure%2C%20beauty%20technician%20applying%20eyelashes%2C%20professional%20salon%20setting&image_size=square" alt="Eyelash Treatment" class="w-full h-64 object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-dark">
+                    <span class="en">What Our <span class="text-primary">Clients Say</span></span>
+                    <span class="zh hidden">客户 <span class="text-primary">评价</span></span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    <span class="en">Read what our valued clients have to say about their experiences at Floris Nails & Spa.</span>
+                    <span class="zh hidden">阅读我们尊贵的客户对他们在 Floris Nails & Spa 体验的评价。</span>
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card bg-white rounded-lg shadow-soft p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"I love coming to Floris Nails & Spa! The staff is incredibly friendly and professional, and the atmosphere is so relaxing. My nails always look perfect after my visit."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            J
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-dark">Jennifer L.</h4>
+                            <p class="text-gray-500 text-sm">Regular Client</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card bg-white rounded-lg shadow-soft p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"The pedicure I received was absolutely amazing! The technician was very thorough, and the massage was so relaxing. I'll definitely be back for more services."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            M
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-dark">Michael T.</h4>
+                            <p class="text-gray-500 text-sm">New Client</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card bg-white rounded-lg shadow-soft p-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"I've been to many nail salons, but Floris Nails & Spa is by far the best. The attention to detail and the quality of service are exceptional. Highly recommended!"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            S
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-dark">Sarah K.</h4>
+                            <p class="text-gray-500 text-sm">VIP Client</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-dark">
+                    <span class="en">Contact <span class="text-primary">Us</span></span>
+                    <span class="zh hidden">联系 <span class="text-primary">我们</span></span>
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    <span class="en">Visit us today or give us a call to schedule your next appointment.</span>
+                    <span class="zh hidden">今天就来拜访我们或给我们打电话预约您的下一次服务。</span>
+                </p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row">
+                <!-- Contact Information -->
+                <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right">
+                    <div class="bg-light rounded-lg shadow-soft p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-dark">
+                            <span class="en">Visit Our Salon</span>
+                            <span class="zh hidden">访问我们的沙龙</span>
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-secondary p-3 rounded-full mr-4">
+                                    <i class="fa fa-map-marker text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-dark mb-1">
+                                        <span class="en">Address</span>
+                                        <span class="zh hidden">地址</span>
+                                    </h4>
+                                    <p class="text-gray-600">277 N Central Ave, Hartsdale, NY 10530</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-secondary p-3 rounded-full mr-4">
+                                    <i class="fa fa-phone text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-dark mb-1">
+                                        <span class="en">Phone</span>
+                                        <span class="zh hidden">电话</span>
+                                    </h4>
+                                    <p class="text-gray-600">(914) 686-4888</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-secondary p-3 rounded-full mr-4">
+                                    <i class="fa fa-clock-o text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-dark mb-1">
+                                        <span class="en">Business Hours</span>
+                                        <span class="zh hidden">营业时间</span>
+                                    </h4>
+                                    <div class="space-y-2 text-gray-600">
+                                        <div class="flex justify-between">
+                                            <span>Monday:</span>
+                                            <span>10:00 AM - 7:00 PM</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Tuesday:</span>
+                                            <span>10:00 AM - 7:00 PM</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Wednesday:</span>
+                                            <span>10:00 AM - 7:00 PM</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Thursday:</span>
+                                            <span>10:00 AM - 7:00 PM</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Friday:</span>
+                                            <span>10:00 AM - 7:00 PM</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Saturday:</span>
+                                            <span>10:00 AM - 7:00 PM</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Sunday:</span>
+                                            <span>10:00 AM - 6:00 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-bold text-dark mb-3">Follow Us / 关注我们</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.facebook.com/FlorisNailsSpa/" target="_blank" class="bg-secondary w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all-300">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                                <a href="https://www.instagram.com/florisnailsspa/" target="_blank" class="bg-secondary w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all-300">
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                                <a href="#" class="bg-secondary w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all-300">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                                <a href="#" class="bg-secondary w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all-300">
+                                    <i class="fa fa-pinterest"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map -->
+                <div class="md:w-1/2 md:pl-8" data-aos="fade-left">
+                    <div class="bg-light rounded-lg shadow-soft p-8 h-full">
+                        <h3 class="text-2xl font-bold mb-6 text-dark">Find Us / 找到我们</h3>
+                        <div class="rounded-lg overflow-hidden h-96 w-full">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3048.361292545438!2d-73.82634168459766!3d41.02383647930198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c298e8d8c3e513%3A0x6f7e0c7f0a9b4e1a!2s277%20N%20Central%20Ave%2C%20Hartsdale%2C%20NY%2010530%2C%20USA!5e0!3m2!1sen!2sus!4v1615000000000!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" data-aos="fade-up">
+                <span class="en">Ready for a Luxury Experience?</span>
+                <span class="zh hidden">准备好体验奢华了吗？</span>
+            </h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                <span class="en">Book your appointment today and treat yourself to our premium nail care and spa services.</span>
+                <span class="zh hidden">今天就预约您的服务，享受我们的高端美甲和水疗护理。</span>
+            </p>
+            <a href="https://go.bychronos.com/l/hartsdale-10530-floris-nails--spa-805701/a/services" target="_blank" class="bg-white text-primary px-8 py-3 rounded-full font-medium text-lg inline-block hover:bg-light transition-all-300" data-aos="fade-up" data-aos-delay="200">
+                <span class="en">Book Now</span>
+                <span class="zh hidden">立即预约</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-8 md:mb-0">
+                    <h3 class="text-2xl font-bold mb-4">Floris Nails & Spa</h3>
+                    <p class="text-gray-400 max-w-xs">
+                        <span class="en">Your premier destination for luxury nail care and spa treatments in Hartsdale, NY.</span>
+                        <span class="zh hidden">您在纽约哈茨代尔的高端美甲和水疗服务首选目的地。</span>
+                    </p>
+                </div>
+                
+                <div class="mb-8 md:mb-0">
+                    <h4 class="text-lg font-bold mb-4">
+                        <span class="en">Quick Links</span>
+                        <span class="zh hidden">快速链接</span>
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-all-300">
+                            <span class="en">Home</span>
+                            <span class="zh hidden">首页</span>
+                        </a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-all-300">
+                            <span class="en">About</span>
+                            <span class="zh hidden">关于我们</span>
+                        </a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition-all-300">
+                            <span class="en">Services</span>
+                            <span class="zh hidden">服务</span>
+                        </a></li>
+                        <li><a href="#gallery" class="text-gray-400 hover:text-white transition-all-300">
+                            <span class="en">Gallery</span>
+                            <span class="zh hidden">作品展示</span>
+                        </a></li>
+                        <li><a href="#testimonials" class="text-gray-400 hover:text-white transition-all-300">
+                            <span class="en">Testimonials</span>
+                            <span class="zh hidden">客户评价</span>
+                        </a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-all-300">
+                            <span class="en">Contact</span>
+                            <span class="zh hidden">联系我们</span>
+                        </a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">
+                        <span class="en">Contact Us</span>
+                        <span class="zh hidden">联系我们</span>
+                    </h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span class="text-gray-400">277 N Central Ave, Hartsdale, NY 10530</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone mr-2 text-primary"></i>
+                            <span class="text-gray-400">(914) 686-4888</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2025 Floris Nails & Spa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div id="scroll-top" class="scroll-top">
+        <i class="fa fa-arrow-up"></i>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize AOS Animation Library
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu when clicking on a link
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update active nav link
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // Scroll to top button
+            const scrollTopBtn = document.getElementById('scroll-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Update active nav link on scroll
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('.nav-link');
+                
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // Language switching functionality
+            function setLanguage(lang) {
+                // Hide all language elements
+                document.querySelectorAll('.en, .zh').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                
+                // Show elements for selected language
+                document.querySelectorAll(`.${lang}`).forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                
+                // Update language buttons
+                document.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-primary', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-dark');
+                });
+                
+                document.querySelectorAll(`#lang-${lang}, #mobile-lang-${lang}`).forEach(btn => {
+                    btn.classList.add('active', 'bg-primary', 'text-white');
+                    btn.classList.remove('bg-gray-200', 'text-dark');
+                });
+                
+                // Store language preference in localStorage
+                localStorage.setItem('language', lang);
+            }
+            
+            // Initialize language
+            document.addEventListener('DOMContentLoaded', function() {
+                // Get stored language or default to English
+                const savedLang = localStorage.getItem('language') || 'en';
+                setLanguage(savedLang);
+                
+                // Add event listeners for language buttons
+                document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+                document.getElementById('lang-zh').addEventListener('click', () => setLanguage('zh'));
+                document.getElementById('mobile-lang-en').addEventListener('click', () => setLanguage('en'));
+                document.getElementById('mobile-lang-zh').addEventListener('click', () => setLanguage('zh'));
+            });
+        });
+    </script>
+</body>
+</html>
